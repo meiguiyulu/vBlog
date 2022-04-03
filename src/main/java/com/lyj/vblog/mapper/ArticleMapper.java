@@ -1,8 +1,11 @@
 package com.lyj.vblog.mapper;
 
+import com.lyj.vblog.dos.Archives;
 import com.lyj.vblog.pojo.Article;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
+
+import java.util.List;
 
 /**
  * <p>
@@ -15,4 +18,9 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface ArticleMapper extends BaseMapper<Article> {
 
+    /**
+     * 文章归档
+     * @return
+     */
+    List<Archives> listArchives();
 }

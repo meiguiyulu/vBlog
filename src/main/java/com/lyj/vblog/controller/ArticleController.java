@@ -49,4 +49,13 @@ public class ArticleController {
         return Result.success(articleService.findNewArticles(limit));
     }
 
+    /**
+     * 首页 文章归档
+     * @return
+     */
+    @PostMapping("/listArchives")
+    public Result listArchives(){
+        return Result.success(articleService.listArchives());
+    }
+
 }

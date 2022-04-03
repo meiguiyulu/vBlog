@@ -2,6 +2,7 @@ package com.lyj.vblog.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.lyj.vblog.dos.Archives;
 import com.lyj.vblog.pojo.Article;
 import com.lyj.vblog.mapper.ArticleMapper;
 import com.lyj.vblog.pojo.SysUser;
@@ -77,6 +78,15 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
 
         List<ArticleVo> articleVos = copyList(articles, false, false);
         return articleVos;
+    }
+
+    /**
+     * 文章归档
+     * @return
+     */
+    @Override
+    public List<Archives> listArchives() {
+        return articleMapper.listArchives();
     }
 
     private List<ArticleVo> copyList(List<Article> records, boolean isTag, boolean isAuthor) {

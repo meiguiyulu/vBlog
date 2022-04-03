@@ -1,5 +1,7 @@
 package com.lyj.vblog.service;
 
+import com.lyj.vblog.common.Result;
+import com.lyj.vblog.dos.Archives;
 import com.lyj.vblog.pojo.Article;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.lyj.vblog.vo.ArticleVo;
@@ -37,4 +39,11 @@ public interface IArticleService extends IService<Article> {
      * @return
      */
     List<ArticleVo> findNewArticles(int limit);
+
+
+    /**
+     * 首页 文章归档
+     * @return
+     */
+    List<Archives> listArchives();
 }
