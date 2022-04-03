@@ -1,7 +1,9 @@
 package com.lyj.vblog.service;
 
+import com.lyj.vblog.common.Result;
 import com.lyj.vblog.pojo.SysUser;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.lyj.vblog.vo.LoginParam;
 
 /**
  * <p>
@@ -20,4 +22,12 @@ public interface ISysUserService extends IService<SysUser> {
      */
     SysUser findUserById(long userId);
 
+    /**
+     * 登录功能
+     * @param loginParam
+     * @return
+     */
+    Result login(LoginParam loginParam);
+
+    SysUser findUser(String account, String password);
 }
