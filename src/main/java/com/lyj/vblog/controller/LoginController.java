@@ -30,4 +30,15 @@ public class LoginController {
     public Result logout(@RequestHeader("Authorization") String token) {
         return Result.success(userService.logout(token));
     }
+
+    /**
+     * 注册
+     *
+     * @param loginParam
+     * @return
+     */
+    @PostMapping("/register")
+    public Result register(@RequestBody LoginParam loginParam) {
+        return userService.register(loginParam);
+    }
 }

@@ -24,6 +24,13 @@ public interface ISysUserService extends IService<SysUser> {
     SysUser findUserById(long userId);
 
     /**
+     * 根据account查询用户信息
+     * @param account
+     * @return
+     */
+    SysUser findUserByAccount(String account);
+
+    /**
      * 登录功能
      * @param loginParam
      * @return
@@ -45,4 +52,11 @@ public interface ISysUserService extends IService<SysUser> {
      * @return
      */
     Object logout(String token);
+
+    /**
+     * 注册
+     * @param loginParam
+     * @return
+     */
+    Result register(LoginParam loginParam);
 }

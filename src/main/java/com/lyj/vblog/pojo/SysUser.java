@@ -36,7 +36,7 @@ public class SysUser implements Serializable {
     /**
      * 是否管理员
      */
-    private Boolean admin;
+    private Integer admin;
 
     /**
      * 头像
@@ -51,7 +51,7 @@ public class SysUser implements Serializable {
     /**
      * 是否删除
      */
-    private Boolean deleted;
+    private Integer deleted;
 
     /**
      * 邮箱
