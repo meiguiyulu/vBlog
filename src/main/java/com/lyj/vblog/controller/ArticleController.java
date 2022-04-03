@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 /**
- *
  * @author LiuYunJie
  * @since 2022-04-02
  */
@@ -21,16 +20,18 @@ public class ArticleController {
 
     /**
      * 首页 文章列表
+     *
      * @param pageParams
      * @return
      */
     @PostMapping
-    public Result listArticle(@RequestBody PageParams pageParams){
+    public Result listArticle(@RequestBody PageParams pageParams) {
         return Result.success(articleService.listArticle(pageParams));
     }
 
     /**
      * 首页 最热文章
+     *
      * @return
      */
     @PostMapping("/hot")
@@ -41,6 +42,7 @@ public class ArticleController {
 
     /**
      * 首页 最新文章
+     *
      * @return
      */
     @PostMapping("/new")
@@ -51,11 +53,23 @@ public class ArticleController {
 
     /**
      * 首页 文章归档
+     *
      * @return
      */
     @PostMapping("/listArchives")
-    public Result listArchives(){
+    public Result listArchives() {
         return Result.success(articleService.listArchives());
+    }
+
+    /**
+     * 文章详情
+     *
+     * @param id
+     * @return
+     */
+    @PostMapping("/view/{id}")
+    public Result findArticleById(@PathVariable("id") Long id) {
+        return Result.success(articleService.findArticleById(id));
     }
 
 }
