@@ -68,6 +68,17 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         return articleVos;
     }
 
+    @Override
+    public List<ArticleVo> findNewArticles(int limit) {
+        QueryWrapper<Article> wrapper = new QueryWrapper<Article>()
+                .orderByDesc("create_date")
+                .last("limit " + limit);
+        List<Article> articles = articleMapper.selectList(wrapper);
+
+        List<ArticleVo> articleVos = copyList(articles, false, false);
+        return articleVos;
+    }
+
     private List<ArticleVo> copyList(List<Article> records, boolean isTag, boolean isAuthor) {
         List<ArticleVo> articleVos = new ArrayList<>();
         for (Article record : records) {

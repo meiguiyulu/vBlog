@@ -39,4 +39,14 @@ public class ArticleController {
         return Result.success(articleService.findHotArticles(limit));
     }
 
+    /**
+     * 首页 最新文章
+     * @return
+     */
+    @PostMapping("/new")
+    public Result newArticles() {
+        int limit = 5; // 取前5条
+        return Result.success(articleService.findNewArticles(limit));
+    }
+
 }

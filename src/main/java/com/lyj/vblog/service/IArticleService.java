@@ -30,4 +30,11 @@ public interface IArticleService extends IService<Article> {
      * @return
      */
     List<ArticleVo> findHotArticles(int limit);
+
+    /**
+     * 最新文章
+     * @param limit
+     * @return
+     */
+    List<ArticleVo> findNewArticles(int limit);
 }
