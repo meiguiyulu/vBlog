@@ -126,4 +126,10 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
         return loginUserVo;
     }
+
+    @Override
+    public Object logout(String token) {
+        redisTemplate.delete("TOKEN_" + token);
+        return null;
+    }
 }

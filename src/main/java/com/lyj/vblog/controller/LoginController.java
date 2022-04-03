@@ -4,13 +4,9 @@ import com.lyj.vblog.common.Result;
 import com.lyj.vblog.service.ISysUserService;
 import com.lyj.vblog.vo.LoginParam;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/login")
 public class LoginController {
 
     @Autowired
@@ -18,11 +14,20 @@ public class LoginController {
 
     /**
      * 登录功能
+     *
      * @param loginParam
      * @return
      */
-    @PostMapping
+    @PostMapping("/login")
     public Result login(@RequestBody LoginParam loginParam) {
         return userService.login(loginParam);
+    }
+
+    /**
+     * 注销
+     */
+    @GetMapping("/logout")
+    public Result logout(@RequestHeader("Authorization") String token) {
+        return Result.success(userService.logout(token));
     }
 }

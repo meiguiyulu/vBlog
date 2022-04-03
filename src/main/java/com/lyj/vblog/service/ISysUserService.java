@@ -38,4 +38,11 @@ public interface ISysUserService extends IService<SysUser> {
      * @return
      */
     LoginUserVo findUserByToken(String token);
+
+    /**
+     * 退出登录
+     * @param token
+     * @return
+     */
+    Object logout(String token);
 }
