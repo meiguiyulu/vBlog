@@ -14,6 +14,7 @@ import com.lyj.vblog.service.IArticleService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.lyj.vblog.service.ISysUserService;
 import com.lyj.vblog.service.ITagService;
+import com.lyj.vblog.service.IThreadService;
 import com.lyj.vblog.vo.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,6 +50,9 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
 
     @Autowired
     private CategoryMapper categoryMapper;
+
+    @Autowired
+    private IThreadService threadService;
 
     /**
      * 分页查询文章列表
@@ -108,6 +112,10 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
      */
     @Override
     public ArticleVo findArticleById(Long id) {
+        /**
+         * 1. 根据id查询文章信息
+         * 2. 根据bodyId和categoryId查询内容和类比的信息
+         */
         Article article = articleMapper.selectById(id);
         ArticleVo articleVo = new ArticleVo();
         BeanUtils.copyProperties(article, articleVo);
@@ -133,6 +141,13 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         CategoryVo categoryVo = new CategoryVo();
         BeanUtils.copyProperties(category, categoryVo);
         articleVo.setCategoryVo(categoryVo);
+
+        /**
+         * 查看完文章 阅读数需要加1
+         *      如果更新出问题 不能影响文章的其余操作
+         * 可以把更新操作放到线程池中 这样就和主线程无关了
+         */
+        threadService.updateReadView(article);
         return articleVo;
     }
 
