@@ -29,4 +29,14 @@ public class ArticleController {
         return Result.success(articleService.listArticle(pageParams));
     }
 
+    /**
+     * 首页 最热文章
+     * @return
+     */
+    @PostMapping("/hot")
+    public Result hotArticles() {
+        int limit = 5; // 取前5条
+        return Result.success(articleService.findHotArticles(limit));
+    }
+
 }

@@ -23,4 +23,11 @@ public interface IArticleService extends IService<Article> {
      * @return
      */
     List<ArticleVo> listArticle(PageParams pageParams);
+
+    /**
+     * 最热文章
+     * @param limit
+     * @return
+     */
+    List<ArticleVo> findHotArticles(int limit);
 }

@@ -52,13 +52,24 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
                 .orderByDesc("create_date", "weight");
         Page selectPage = articleMapper.selectPage(page, wrapper);
         List<Article> records = selectPage.getRecords();
-        List<ArticleVo> articleVos = new ArrayList<>();
 
-        articleVos = copyList(articleVos, records, true, true);
+        List<ArticleVo> articleVos = copyList(records, true, true);
         return articleVos;
     }
 
-    private List<ArticleVo> copyList(List<ArticleVo> articleVos, List<Article> records, boolean isTag, boolean isAuthor) {
+    @Override
+    public List<ArticleVo> findHotArticles(int limit) {
+        QueryWrapper<Article> wrapper = new QueryWrapper<Article>()
+                .orderByDesc("view_counts")
+                .last("limit " + limit);
+        List<Article> articles = articleMapper.selectList(wrapper);
+
+        List<ArticleVo> articleVos = copyList(articles, false, false);
+        return articleVos;
+    }
+
+    private List<ArticleVo> copyList(List<Article> records, boolean isTag, boolean isAuthor) {
+        List<ArticleVo> articleVos = new ArrayList<>();
         for (Article record : records) {
             ArticleVo articleVo = new ArticleVo();
             BeanUtils.copyProperties(record, articleVo);
