@@ -4,6 +4,7 @@ import com.lyj.vblog.common.Result;
 import com.lyj.vblog.pojo.SysUser;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.lyj.vblog.vo.LoginParam;
+import com.lyj.vblog.vo.LoginUserVo;
 
 /**
  * <p>
@@ -30,4 +31,11 @@ public interface ISysUserService extends IService<SysUser> {
     Result login(LoginParam loginParam);
 
     SysUser findUser(String account, String password);
+
+    /**
+     * 根据token查询登录的用户信息
+     * @param token
+     * @return
+     */
+    LoginUserVo findUserByToken(String token);
 }

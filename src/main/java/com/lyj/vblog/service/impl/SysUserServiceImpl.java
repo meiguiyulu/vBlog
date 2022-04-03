@@ -3,6 +3,8 @@ package com.lyj.vblog.service.impl;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.crypto.SecureUtil;
 import cn.hutool.crypto.digest.MD5;
+import cn.hutool.json.JSON;
+import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.lyj.vblog.common.ErrorCode;
@@ -13,10 +15,14 @@ import com.lyj.vblog.service.ISysUserService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.lyj.vblog.utils.JWTUtil;
 import com.lyj.vblog.vo.LoginParam;
+import com.lyj.vblog.vo.LoginUserVo;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -70,6 +76,10 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
             return Result.fail(ErrorCode.ACCOUNT_PWD_NOT_EXIST.getCode(), ErrorCode.ACCOUNT_PWD_NOT_EXIST.getMsg());
         }
 
+        // 修改用户上次登陆时间
+        user.setLastLogin(new Date());
+        userMapper.updateById(user);
+
         // 登陆成功，使用JWT生成token 存入redis中
         String token = JWTUtil.createToken(user.getId());
         redisTemplate.opsForValue().set("TOKEN_" + token, JSONUtil.toJsonStr(user), 1, TimeUnit.DAYS);
@@ -83,5 +93,37 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
                 .eq("password", password);
         SysUser user = userMapper.selectOne(wrapper);
         return user;
+    }
+
+    /**
+     * 根据token查询登录用户的信息
+     *
+     * @param token
+     * @return
+     */
+    @Override
+    public LoginUserVo findUserByToken(String token) {
+        /**
+         * 1. 校验token合法性
+         *      是否为空/解析是否成功/redis是否存在
+         * 2. 如果校验失败，返回错误
+         * 3. 如果成功，返回对应的结果
+         */
+        if (token == null) {
+            return null;
+        }
+        Map<String, Object> map = JWTUtil.checkToken(token);
+        if (map == null) {
+            return null;
+        }
+        String userJson = redisTemplate.opsForValue().get("TOKEN_" + token);
+        if (StrUtil.isBlank(userJson)) {
+            return null;
+        }
+        SysUser sysUser = JSONUtil.toBean(userJson, SysUser.class);
+        LoginUserVo loginUserVo = new LoginUserVo();
+        BeanUtils.copyProperties(sysUser, loginUserVo);
+
+        return loginUserVo;
     }
 }
