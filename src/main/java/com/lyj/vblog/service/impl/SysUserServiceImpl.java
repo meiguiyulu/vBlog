@@ -129,19 +129,28 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         if (token == null) {
             return null;
         }
-        Map<String, Object> map = JWTUtil.checkToken(token);
-        if (map == null) {
-            return null;
-        }
-        String userJson = redisTemplate.opsForValue().get("TOKEN_" + token);
-        if (StrUtil.isBlank(userJson)) {
-            return null;
-        }
-        SysUser sysUser = JSONUtil.toBean(userJson, SysUser.class);
+        SysUser sysUser = checkToken(token);
         LoginUserVo loginUserVo = new LoginUserVo();
         BeanUtils.copyProperties(sysUser, loginUserVo);
 
         return loginUserVo;
+    }
+
+    @Override
+    public SysUser checkToken(String token) {
+        if (StrUtil.isBlank(token)) {
+            return null;
+        }
+        Map<String, Object> map = JWTUtil.checkToken(token);
+        if (map == null) {
+            return null;
+        }
+        String s = redisTemplate.opsForValue().get("TOKEN_" + token);
+        if (StrUtil.isBlank(s)) {
+            return null;
+        }
+        SysUser user = JSONUtil.toBean(s, SysUser.class);
+        return user;
     }
 
     /**

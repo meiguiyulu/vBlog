@@ -59,4 +59,6 @@ public interface ISysUserService extends IService<SysUser> {
      * @return
      */
     Result register(LoginParam loginParam);
+
+    SysUser checkToken(String token);
 }
