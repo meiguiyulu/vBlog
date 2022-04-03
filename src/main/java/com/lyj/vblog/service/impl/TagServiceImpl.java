@@ -8,6 +8,7 @@ import com.lyj.vblog.vo.TagVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -27,5 +28,31 @@ public class TagServiceImpl extends ServiceImpl<TagMapper, Tag> implements ITagS
     @Override
     public List<TagVo> findTagsByArticleId(Long id) {
         return tagMapper.findTagsByArticleId(id);
+    }
+
+    @Override
+    public List<Tag> findHotTags(int limit) {
+        /*这里可以直接一条sql语句多表查询也可
+        * select
+        from ms_tag
+        where id in (
+            select tag_id
+            from (select tag_id
+                  from ms_article_tag
+                  group by tag_id
+                  order by count(tag_id) desc
+                  limit 6)
+                     as t
+        );
+        */
+
+        List<Long> hotTagIds = tagMapper.findHotTagsIds(limit);
+        if (hotTagIds.isEmpty()) {
+            return Collections.emptyList();
+        }
+//        System.out.println("hotTagIds: " + hotTagIds);
+
+        List<Tag> tags = tagMapper.selectBatchIds(hotTagIds);
+        return tags;
     }
 }

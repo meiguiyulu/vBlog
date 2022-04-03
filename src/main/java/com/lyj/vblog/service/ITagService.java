@@ -23,4 +23,5 @@ public interface ITagService extends IService<Tag> {
      */
     List<TagVo> findTagsByArticleId(Long id);
 
+    List<Tag> findHotTags(int limit);
 }
