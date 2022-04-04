@@ -1,11 +1,10 @@
 package com.lyj.vblog.service;
 
-import com.lyj.vblog.common.Result;
 import com.lyj.vblog.dos.Archives;
 import com.lyj.vblog.pojo.Article;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.lyj.vblog.vo.ArticleVo;
-import com.lyj.vblog.vo.PageParams;
+import com.lyj.vblog.params.PageParams;
 
 import java.util.List;
 

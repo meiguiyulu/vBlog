@@ -1,5 +1,6 @@
 package com.lyj.vblog.service;
 
+import com.lyj.vblog.params.CommentParam;
 import com.lyj.vblog.pojo.Comment;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.lyj.vblog.vo.CommentVo;
@@ -22,4 +23,6 @@ public interface ICommentService extends IService<Comment> {
      * @return
      */
     List<CommentVo> commentsByArticleId(Long id);
+
+    Boolean addComment(CommentParam param);
 }

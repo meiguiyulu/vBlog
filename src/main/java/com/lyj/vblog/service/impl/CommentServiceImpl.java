@@ -1,12 +1,14 @@
 package com.lyj.vblog.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.lyj.vblog.params.CommentParam;
 import com.lyj.vblog.pojo.Comment;
 import com.lyj.vblog.mapper.CommentMapper;
 import com.lyj.vblog.pojo.SysUser;
 import com.lyj.vblog.service.ICommentService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.lyj.vblog.service.ISysUserService;
+import com.lyj.vblog.utils.ThreadLocalUtil;
 import com.lyj.vblog.vo.CommentVo;
 import com.lyj.vblog.vo.UserVo;
 import org.springframework.beans.BeanUtils;
@@ -14,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -56,6 +59,32 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
         List<CommentVo> commentVoList = copyList(comments);
 
         return commentVoList;
+    }
+
+    /**
+     * 新增评论
+     *
+     * @param param
+     * @return
+     */
+    @Override
+    public Boolean addComment(CommentParam param) {
+        SysUser user = ThreadLocalUtil.get(); // 当前登录用户
+        Comment comment = new Comment();
+        comment.setArticleId(param.getArticleId());
+        comment.setAuthorId(user.getId());
+        comment.setContent(param.getContent());
+        comment.setCreateDate(new Date());
+        Long parent = param.getParent();
+        if (parent == null || parent == 0) {
+            comment.setLevel(1);
+        } else {
+            comment.setLevel(2);
+        }
+        comment.setParentId(parent == null ? 0 : parent);
+        comment.setToUid(param.getToUserId() == null ? 0 : param.getToUserId());
+        commentMapper.insert(comment);
+        return null;
     }
 
     private List<CommentVo> copyList(List<Comment> comments) {

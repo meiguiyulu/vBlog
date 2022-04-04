@@ -1,4 +1,4 @@
-package com.lyj.vblog.vo;
+package com.lyj.vblog.params;
 
 import lombok.Data;
 

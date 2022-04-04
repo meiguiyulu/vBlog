@@ -3,16 +3,19 @@ package com.lyj.vblog.pojo;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
+
 import java.io.Serializable;
 import java.util.Date;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 /**
  * <p>
- * 
+ *
  * </p>
  *
  * @author LiuYunJie
@@ -33,7 +36,7 @@ public class Comment implements Serializable {
 
     private Date createDate;
 
-    private Integer articleId;
+    private Long articleId;
 
     private Long authorId;
 

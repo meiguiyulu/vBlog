@@ -3,7 +3,7 @@ package com.lyj.vblog.controller;
 
 import com.lyj.vblog.common.Result;
 import com.lyj.vblog.service.IArticleService;
-import com.lyj.vblog.vo.PageParams;
+import com.lyj.vblog.params.PageParams;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

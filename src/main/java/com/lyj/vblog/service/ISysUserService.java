@@ -3,7 +3,7 @@ package com.lyj.vblog.service;
 import com.lyj.vblog.common.Result;
 import com.lyj.vblog.pojo.SysUser;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.lyj.vblog.vo.LoginParam;
+import com.lyj.vblog.params.LoginParam;
 import com.lyj.vblog.vo.LoginUserVo;
 
 /**

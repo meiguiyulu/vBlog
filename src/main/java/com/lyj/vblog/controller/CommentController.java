@@ -2,15 +2,11 @@ package com.lyj.vblog.controller;
 
 
 import com.lyj.vblog.common.Result;
+import com.lyj.vblog.params.CommentParam;
 import com.lyj.vblog.service.ICommentService;
 import com.lyj.vblog.vo.CommentVo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -33,6 +29,11 @@ public class CommentController {
     public Result comments(@PathVariable("id") Long id) {
         List<CommentVo> list = commentService.commentsByArticleId(id);
         return Result.success(list);
+    }
+
+    @PostMapping("/create/change")
+    public Result addComment(@RequestBody CommentParam param){
+        return Result.success(commentService.addComment(param));
     }
 
 }
