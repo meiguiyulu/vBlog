@@ -49,9 +49,6 @@ public class IThreadService {
         QueryWrapper<Article> wrapper = new QueryWrapper<Article>()
                 .eq("id", articleId)
                 .eq("comment_counts", commentCounts);
-        int update = articleMapper.update(article, wrapper);
-        if (update != 1) {
-            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-        }
+        articleMapper.update(article, wrapper);
     }
 }
