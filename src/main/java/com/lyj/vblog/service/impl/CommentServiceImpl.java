@@ -8,12 +8,14 @@ import com.lyj.vblog.pojo.SysUser;
 import com.lyj.vblog.service.ICommentService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.lyj.vblog.service.ISysUserService;
+import com.lyj.vblog.service.IThreadService;
 import com.lyj.vblog.utils.ThreadLocalUtil;
 import com.lyj.vblog.vo.CommentVo;
 import com.lyj.vblog.vo.UserVo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -35,6 +37,9 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
 
     @Autowired
     private ISysUserService userService;
+
+    @Autowired
+    private IThreadService threadService;
 
     /**
      * 根据文章id查询评论信息
@@ -68,6 +73,7 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
      * @return
      */
     @Override
+    @Transactional
     public Boolean addComment(CommentParam param) {
         SysUser user = ThreadLocalUtil.get(); // 当前登录用户
         Comment comment = new Comment();
@@ -84,6 +90,9 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
         comment.setParentId(parent == null ? 0 : parent);
         comment.setToUid(param.getToUserId() == null ? 0 : param.getToUserId());
         commentMapper.insert(comment);
+
+        // 文章的评论量 + 1
+        threadService.updateCommentView(param.getArticleId());
         return null;
     }
 

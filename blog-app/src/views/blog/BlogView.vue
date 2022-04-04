@@ -83,7 +83,7 @@
             </div>
 
             <div class="me-view-comment-title">
-              <span>{{ article.viewCounts }} 条评论</span>
+              <span>{{ article.commentCounts }} 条评论</span>
             </div>
 
             <commment-item
