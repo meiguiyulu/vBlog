@@ -15,7 +15,7 @@ import java.util.List;
 
 /**
  * <p>
- *  前端控制器
+ * 前端控制器
  * </p>
  *
  * @author LiuYunJie
@@ -29,7 +29,7 @@ public class TagController {
     private ITagService tagService;
 
     @GetMapping("hot")
-    public Result hotTags(){
+    public Result hotTags() {
         /*前6个最热标签*/
         int limit = 6;
         List<Tag> tagList = tagService.findHotTags(limit);
@@ -38,10 +38,11 @@ public class TagController {
 
     /**
      * 所有标签
+     * "/detail" 是导航栏处文章分类的url
      * @return
      */
-    @GetMapping
-    public Result tag(){
+    @GetMapping({"", "/detail"})
+    public Result tag() {
         return Result.success(tagService.findAll());
     }
 
