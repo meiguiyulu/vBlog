@@ -28,6 +28,7 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
 
     /**
      * 所有类别
+     *
      * @return
      */
     @Override
@@ -35,6 +36,19 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
         List<Category> list = categoryMapper.selectList(null);
         List<CategoryVo> categoryVos = copyList(list);
         return categoryVos;
+    }
+
+    /**
+     * 类别信息
+     * @param id
+     * @return
+     */
+    @Override
+    public CategoryVo categoryById(Long id) {
+        Category category = categoryMapper.selectById(id);
+        CategoryVo categoryVo = new CategoryVo();
+        BeanUtils.copyProperties(category, categoryVo);
+        return categoryVo;
     }
 
     private List<CategoryVo> copyList(List<Category> categories) {

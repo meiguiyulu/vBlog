@@ -21,4 +21,11 @@ public interface ICategoryService extends IService<Category> {
      * @return
      */
     List<CategoryVo> findAll();
+
+    /**
+     * 类别信息
+     * @param id
+     * @return
+     */
+    CategoryVo categoryById(Long id);
 }

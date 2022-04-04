@@ -1,5 +1,6 @@
 package com.lyj.vblog.service.impl;
 
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.lyj.vblog.dos.Archives;
@@ -67,7 +68,28 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
     public List<ArticleVo> listArticle(PageParams pageParams) {
         Page page = new Page(pageParams.getCurrPage(), pageParams.getPageSize());
         QueryWrapper<Article> wrapper = new QueryWrapper<Article>()
+                .eq(pageParams.getCategoryId() != null, "category_id", pageParams.getCategoryId())
                 .orderByDesc("create_date", "weight");
+
+        List<Long> articleIdList = new ArrayList<>();
+        if (pageParams.getTagId() != null) {
+            List<ArticleTag> articleTags = articleTagService.findByTagId(pageParams.getTagId());
+            for (ArticleTag articleTag : articleTags) {
+                articleIdList.add(articleTag.getArticleId());
+            }
+            if (articleIdList.size() > 0) {
+                wrapper.in("id", articleIdList);
+            }
+        }
+
+        // 时间
+        String month = pageParams.getMonth();
+        String year = pageParams.getYear();
+        if (!StrUtil.isBlank(month) && !StrUtil.isBlank(year)) {
+            String data = year + "-" + month;
+            wrapper.likeRight("create_date", data);
+        }
+
         Page selectPage = articleMapper.selectPage(page, wrapper);
         List<Article> records = selectPage.getRecords();
 

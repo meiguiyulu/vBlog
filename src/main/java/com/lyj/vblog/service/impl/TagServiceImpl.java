@@ -74,4 +74,17 @@ public class TagServiceImpl extends ServiceImpl<TagMapper, Tag> implements ITagS
         }
         return tagVos;
     }
+
+    /**
+     * 根据id查询标签信息
+     * @param id
+     * @return
+     */
+    @Override
+    public TagVo findTagDetail(Long id) {
+        Tag tag = tagMapper.selectById(id);
+        TagVo tagVo = new TagVo();
+        BeanUtils.copyProperties(tag, tagVo);
+        return tagVo;
+    }
 }

@@ -6,6 +6,7 @@ import com.lyj.vblog.service.ICategoryService;
 import org.apache.logging.log4j.message.ReusableMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.springframework.stereotype.Controller;
@@ -42,6 +43,16 @@ public class CategoryController {
     @GetMapping("/detail")
     public Result detail() {
         return categories();
+    }
+
+    /**
+     * 类别信息
+     * @param id
+     * @return
+     */
+    @GetMapping("/detail/{id}")
+    public Result categoryById(@PathVariable("id") Long id) {
+        return Result.success(categoryService.categoryById(id));
     }
 
 }

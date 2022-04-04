@@ -6,6 +6,7 @@ import com.lyj.vblog.pojo.Tag;
 import com.lyj.vblog.service.ITagService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.springframework.stereotype.Controller;
@@ -39,11 +40,23 @@ public class TagController {
     /**
      * 所有标签
      * "/detail" 是导航栏处文章分类的url
+     *
      * @return
      */
     @GetMapping({"", "/detail"})
     public Result tag() {
         return Result.success(tagService.findAll());
+    }
+
+    /**
+     * 根据id查询标签信息
+     *
+     * @param id
+     * @return
+     */
+    @GetMapping("/detail/{id}")
+    public Result tagDetail(@PathVariable("id") Long id) {
+        return Result.success(tagService.findTagDetail(id));
     }
 
 }

@@ -30,4 +30,11 @@ public interface ITagService extends IService<Tag> {
      * @return
      */
     List<TagVo> findAll();
+
+    /**
+     * 根据id查询标签信息
+     * @param id
+     * @return
+     */
+    TagVo findTagDetail(Long id);
 }
