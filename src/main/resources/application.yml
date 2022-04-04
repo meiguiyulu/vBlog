@@ -8,6 +8,10 @@ spring:
   redis:
     port: 6379
     host: localhost
+  servlet:
+    multipart:
+      max-request-size: 20MB # 上传文件总的最大值
+      max-file-size: 2MB # 单个文件最大值
 server:
   port: 8888
 # MybatisPlus相关配置
@@ -15,3 +19,7 @@ mybatis-plus:
   configuration:
     # 日志
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+# 七牛云
+qiniu:
+  accessKey: euTTwdD31BR_s6lKT10YbRI5JoOuZWU6RIA3yhPc
+  accessSecretKey: h_qANDA0tArd0iqcMg6eOiNdFJYLMV2eW6OzxBgy
