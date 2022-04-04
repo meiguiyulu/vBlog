@@ -2,6 +2,7 @@ package com.lyj.vblog.controller;
 
 
 import com.lyj.vblog.common.Result;
+import com.lyj.vblog.common.aop.LogAnnotation;
 import com.lyj.vblog.params.ArticleParam;
 import com.lyj.vblog.service.IArticleService;
 import com.lyj.vblog.params.PageParams;
@@ -26,6 +27,7 @@ public class ArticleController {
      * @return
      */
     @PostMapping
+    @LogAnnotation(module="文章", operator="获取文章列表") // 加上此注解 表示要对此接口记录日志
     public Result listArticle(@RequestBody PageParams pageParams) {
         return Result.success(articleService.listArticle(pageParams));
     }
