@@ -76,7 +76,7 @@ public class Article implements Serializable {
     /**
      * 类别id
      */
-    private Integer categoryId;
+    private Long categoryId;
 
 
 }

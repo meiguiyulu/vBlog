@@ -1,5 +1,7 @@
 package com.lyj.vblog.vo;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.lyj.vblog.pojo.SysUser;
 import lombok.Data;
 
@@ -8,6 +10,8 @@ import java.util.List;
 
 @Data
 public class ArticleVo {
+
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long id;
 
     private String title;

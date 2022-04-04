@@ -1,6 +1,7 @@
 package com.lyj.vblog.service;
 
 import com.lyj.vblog.dos.Archives;
+import com.lyj.vblog.params.ArticleParam;
 import com.lyj.vblog.pojo.Article;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.lyj.vblog.vo.ArticleVo;
@@ -52,4 +53,11 @@ public interface IArticleService extends IService<Article> {
      * @return
      */
     ArticleVo findArticleById(Long id);
+
+    /**
+     * 发表文章
+     * @param param
+     * @return
+     */
+    ArticleVo publish(ArticleParam param);
 }

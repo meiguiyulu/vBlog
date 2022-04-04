@@ -2,6 +2,7 @@ package com.lyj.vblog.controller;
 
 
 import com.lyj.vblog.common.Result;
+import com.lyj.vblog.params.ArticleParam;
 import com.lyj.vblog.service.IArticleService;
 import com.lyj.vblog.params.PageParams;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,6 +71,15 @@ public class ArticleController {
     @PostMapping("/view/{id}")
     public Result findArticleById(@PathVariable("id") Long id) {
         return Result.success(articleService.findArticleById(id));
+    }
+
+    /**
+     * 发布文章
+     * @return param
+     */
+    @PostMapping("/publish")
+    public Result publish(@RequestBody ArticleParam param){
+        return Result.success(articleService.publish(param));
     }
 
 }

@@ -5,15 +5,17 @@ import com.lyj.vblog.mapper.TagMapper;
 import com.lyj.vblog.service.ITagService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.lyj.vblog.vo.TagVo;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 /**
  * <p>
- *  服务实现类
+ * 服务实现类
  * </p>
  *
  * @author LiuYunJie
@@ -54,5 +56,22 @@ public class TagServiceImpl extends ServiceImpl<TagMapper, Tag> implements ITagS
 
         List<Tag> tags = tagMapper.selectBatchIds(hotTagIds);
         return tags;
+    }
+
+    /**
+     * 所有标签
+     *
+     * @return
+     */
+    @Override
+    public List<TagVo> findAll() {
+        List<Tag> tags = tagMapper.selectList(null);
+        List<TagVo> tagVos = new ArrayList<>();
+        for (Tag tag : tags) {
+            TagVo tagVo = new TagVo();
+            BeanUtils.copyProperties(tag, tagVo);
+            tagVos.add(tagVo);
+        }
+        return tagVos;
     }
 }

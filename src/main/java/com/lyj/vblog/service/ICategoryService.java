@@ -2,6 +2,9 @@ package com.lyj.vblog.service;
 
 import com.lyj.vblog.pojo.Category;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.lyj.vblog.vo.CategoryVo;
+
+import java.util.List;
 
 /**
  * <p>
@@ -13,4 +16,9 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface ICategoryService extends IService<Category> {
 
+    /**
+     * 所有类别
+     * @return
+     */
+    List<CategoryVo> findAll();
 }

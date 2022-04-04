@@ -5,17 +5,13 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.lyj.vblog.dos.Archives;
 import com.lyj.vblog.mapper.ArticleBodyMapper;
 import com.lyj.vblog.mapper.CategoryMapper;
+import com.lyj.vblog.params.ArticleParam;
 import com.lyj.vblog.params.PageParams;
-import com.lyj.vblog.pojo.Article;
+import com.lyj.vblog.pojo.*;
 import com.lyj.vblog.mapper.ArticleMapper;
-import com.lyj.vblog.pojo.ArticleBody;
-import com.lyj.vblog.pojo.Category;
-import com.lyj.vblog.pojo.SysUser;
-import com.lyj.vblog.service.IArticleService;
+import com.lyj.vblog.service.*;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.lyj.vblog.service.ISysUserService;
-import com.lyj.vblog.service.ITagService;
-import com.lyj.vblog.service.IThreadService;
+import com.lyj.vblog.utils.ThreadLocalUtil;
 import com.lyj.vblog.vo.ArticleBodyVo;
 import com.lyj.vblog.vo.ArticleVo;
 import com.lyj.vblog.vo.CategoryVo;
@@ -23,8 +19,10 @@ import com.lyj.vblog.vo.TagVo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -55,6 +53,9 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
 
     @Autowired
     private IThreadService threadService;
+
+    @Autowired
+    private IArticleTagService articleTagService;
 
     /**
      * 分页查询文章列表
@@ -138,7 +139,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         articleVo.setBody(articleBodyVo);
 
         /*标签信息*/
-        Integer categoryId = article.getCategoryId();
+        Long categoryId = article.getCategoryId();
         Category category = categoryMapper.selectById(categoryId);
         CategoryVo categoryVo = new CategoryVo();
         BeanUtils.copyProperties(category, categoryVo);
@@ -150,6 +151,56 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
          * 可以把更新操作放到线程池中 这样就和主线程无关了
          */
         threadService.updateReadView(article);
+        return articleVo;
+    }
+
+    /**
+     * 发表文章
+     *
+     * @param param
+     * @return
+     */
+    @Override
+    @Transactional // 这里需不需要开启事务呢
+    public ArticleVo publish(ArticleParam param) {
+        SysUser user = ThreadLocalUtil.get();
+
+        // 文章的基本信息
+        Article article = new Article();
+        article.setCommentCounts(0);
+        article.setCreateDate(new Date());
+        article.setModifiedDate(new Date());
+        article.setSummary(param.getSummary());
+        article.setTitle(param.getTitle());
+        article.setViewCounts(0);
+        article.setWeight(0);
+        article.setAuthorId(user.getId());
+        article.setCategoryId(param.getCategory().getId());
+        articleMapper.insert(article); // 会给article返回一个Id? 会的
+
+        Long articleId = article.getId();
+
+        // tags标签 数据库表ms_article_tag
+        List<TagVo> tags = param.getTags();
+        for (TagVo tagVo : tags) {
+            ArticleTag articleTag = new ArticleTag();
+            articleTag.setTagId(tagVo.getId());
+            articleTag.setArticleId(articleId);
+            articleTagService.save(articleTag);
+        }
+
+        // 数据库ms_article_body表
+        ArticleBody articleBody = new ArticleBody();
+        articleBody.setContent(param.getBody().getContent());
+        articleBody.setContentHtml(param.getBody().getContentHtml());
+        articleBody.setArticleId(articleId);
+        articleBodyMapper.insert(articleBody);
+
+        article.setBodyId(articleBody.getId());
+        articleMapper.updateById(article);
+
+        ArticleVo articleVo = new ArticleVo();
+        BeanUtils.copyProperties(article, articleVo);
         return articleVo;
     }
 

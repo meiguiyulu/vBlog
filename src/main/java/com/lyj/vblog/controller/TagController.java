@@ -36,4 +36,13 @@ public class TagController {
         return Result.success(tagList);
     }
 
+    /**
+     * 所有标签
+     * @return
+     */
+    @GetMapping
+    public Result tag(){
+        return Result.success(tagService.findAll());
+    }
+
 }

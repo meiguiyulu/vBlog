@@ -17,8 +17,10 @@ public class CorsConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(loginInterceptor)
-                .excludePathPatterns("/users/**", "/articles/**")
-                .addPathPatterns("/comments/create/change");
+                .excludePathPatterns("/users/**")
+//                .excludePathPatterns("/articles/**")
+                .addPathPatterns("/comments/create/change")
+                .addPathPatterns("/articles/publish");
     }
 
     @Override
