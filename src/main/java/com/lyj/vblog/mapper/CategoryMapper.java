@@ -2,6 +2,7 @@ package com.lyj.vblog.mapper;
 
 import com.lyj.vblog.pojo.Category;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Mapper;
 
 /**
  * <p>
@@ -11,6 +12,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * @author LiuYunJie
  * @since 2022-04-02
  */
+@Mapper
 public interface CategoryMapper extends BaseMapper<Category> {
 
 }

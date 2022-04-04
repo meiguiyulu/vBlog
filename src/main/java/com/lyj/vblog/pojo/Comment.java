@@ -39,9 +39,12 @@ public class Comment implements Serializable {
 
     private Long parentId;
 
+    /**
+     * 给谁评论
+     */
     private Long toUid;
 
-    private String level;
+    private Integer level;
 
 
 }

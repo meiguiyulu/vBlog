@@ -1,5 +1,6 @@
 package com.lyj.vblog.vo;
 
+import com.lyj.vblog.pojo.SysUser;
 import lombok.Data;
 
 import java.util.Date;
@@ -23,7 +24,7 @@ public class ArticleVo {
      */
     private Date createDate;
 
-    private String author;
+    private SysUser author;
 
     private ArticleBodyVo body;
 

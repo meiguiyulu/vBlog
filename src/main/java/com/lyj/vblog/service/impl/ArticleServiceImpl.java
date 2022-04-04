@@ -126,7 +126,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
 
         /*文章的作者信息*/
         SysUser user = userService.findUserById(article.getAuthorId());
-        articleVo.setAuthor(user.getNickname());
+        articleVo.setAuthor(user);
 
         /*文章内容信息*/
         Long bodyId = article.getBodyId();
@@ -166,7 +166,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
             /*文章的作者信息*/
             if (isAuthor) {
                 SysUser user = userService.findUserById(record.getAuthorId());
-                articleVo.setAuthor(user.getNickname());
+                articleVo.setAuthor(user);
             }
             articleVos.add(articleVo);
         }

@@ -15,16 +15,13 @@
     <div>
       <p class="me-view-comment-content">{{comment.content}}</p>
       <div class="me-view-comment-tools">
-        <!--<a class="me-view-comment-tool">-->
-        <!--<i class="el-icon-caret-top"></i> 20-->
-        <!--</a>-->
         <a class="me-view-comment-tool" @click="showComment(-1,comment.author)">
           <i class="me-icon-comment"></i>&nbsp; 评论
         </a>
       </div>
 
       <div class="me-reply-list">
-        <div class="me-reply-item" v-for="c in comment.childrens" :key="c.id">
+        <div class="me-reply-item" v-for="c in comment.children" :key="c.id">
           <div style="font-size: 14px">
             <span class="me-reply-user">{{c.author.nickname}}:&nbsp;&nbsp;</span>
 

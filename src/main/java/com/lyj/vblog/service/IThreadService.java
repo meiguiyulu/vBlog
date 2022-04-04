@@ -21,11 +21,11 @@ public class IThreadService {
                 .eq("id", article.getId())
                 .eq("view_counts", viewCounts); // 类似于乐观锁
         articleMapper.update(article, wrapper);
-        try {
+/*        try {
             //睡眠5秒 证明不会影响主线程的使用
             Thread.sleep(5000);
         } catch (InterruptedException e) {
             e.printStackTrace();
-        }
+        }*/
     }
 }

@@ -14,5 +14,6 @@ export function formatTime(time) {
     return '1天前'
   }
 
-  return time
+  // return time
+  return d.getFullYear() + "年" + d.getMonth() + "月" + d.getDate() + "日" + d.getHours() + "时" + d.getMinutes() + "分";
 }
