@@ -98,8 +98,11 @@
             <artifactId>qiniu-java-sdk</artifactId>
             <version>7.9.5</version>
         </dependency>
-
-
+        <!--RabbitMQ-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-amqp</artifactId>
+        </dependency>
     </dependencies>
 
     <build>

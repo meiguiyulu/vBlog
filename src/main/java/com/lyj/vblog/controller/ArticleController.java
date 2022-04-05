@@ -74,6 +74,7 @@ public class ArticleController {
      * @return
      */
     @PostMapping("/view/{id}")
+//    @Cache(expire = 2 * 60 * 1000, name = "view_articles")
     public Result findArticleById(@PathVariable("id") Long id) {
         return Result.success(articleService.findArticleById(id));
     }
@@ -85,6 +86,14 @@ public class ArticleController {
     @PostMapping("/publish")
     public Result publish(@RequestBody ArticleParam param){
         return Result.success(articleService.publish(param));
+    }
+
+    /**
+     * 修改文章
+     */
+    @PostMapping("/{id}")
+    public Result articleBtId(@PathVariable("id") Long articleId) {
+        return Result.success(articleService.findArticleById(articleId));
     }
 
 }

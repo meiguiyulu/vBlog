@@ -12,13 +12,19 @@ spring:
     multipart:
       max-request-size: 20MB # 上传文件总的最大值
       max-file-size: 2MB # 单个文件最大值
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672
+    username: ems
+    password: 123
+    virtual-host: /ems
 server:
   port: 8888
 # MybatisPlus相关配置
-mybatis-plus:
-  configuration:
-    # 日志
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+#mybatis-plus:
+#  configuration:
+#    # 日志
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 # 七牛云
 qiniu:
   accessKey: euTTwdD31BR_s6lKT10YbRI5JoOuZWU6RIA3yhPc

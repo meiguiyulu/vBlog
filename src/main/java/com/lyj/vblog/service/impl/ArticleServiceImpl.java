@@ -13,10 +13,8 @@ import com.lyj.vblog.mapper.ArticleMapper;
 import com.lyj.vblog.service.*;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.lyj.vblog.utils.ThreadLocalUtil;
-import com.lyj.vblog.vo.ArticleBodyVo;
-import com.lyj.vblog.vo.ArticleVo;
-import com.lyj.vblog.vo.CategoryVo;
-import com.lyj.vblog.vo.TagVo;
+import com.lyj.vblog.vo.*;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -57,6 +55,9 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
 
     @Autowired
     private IArticleTagService articleTagService;
+
+    @Autowired
+    private RabbitTemplate rabbitTemplate;
 
     /**
      * 分页查询文章列表
@@ -189,16 +190,27 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
 
         // 文章的基本信息
         Article article = new Article();
-        article.setCommentCounts(0);
-        article.setCreateDate(new Date());
-        article.setModifiedDate(new Date());
-        article.setSummary(param.getSummary());
-        article.setTitle(param.getTitle());
-        article.setViewCounts(0);
-        article.setWeight(0);
-        article.setAuthorId(user.getId());
-        article.setCategoryId(param.getCategory().getId());
-        articleMapper.insert(article); // 会给article返回一个Id? 会的
+
+        boolean isEdit = false;
+        if (param.getId() != null) {
+            article = articleMapper.selectById(param.getId());
+            article.setTitle(param.getTitle());
+            article.setSummary(param.getSummary());
+            article.setCategoryId(param.getCategory().getId());
+            articleMapper.updateById(article);
+            isEdit = true;
+        } else {
+            article.setCommentCounts(0);
+            article.setCreateDate(new Date());
+            article.setModifiedDate(new Date());
+            article.setSummary(param.getSummary());
+            article.setTitle(param.getTitle());
+            article.setViewCounts(0);
+            article.setWeight(0);
+            article.setAuthorId(user.getId());
+            article.setCategoryId(param.getCategory().getId());
+            articleMapper.insert(article); // 会给article返回一个Id? 会的
+        }
 
         Long articleId = article.getId();
 
@@ -223,6 +235,14 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
 
         ArticleVo articleVo = new ArticleVo();
         BeanUtils.copyProperties(article, articleVo);
+
+        if (isEdit) {
+            // 一条消息给rabbitmq 当前文章更新了，更新一下缓存吧
+            ArticleMessage articleMessage = new ArticleMessage();
+            articleMessage.setArticleId(articleId);
+            rabbitTemplate.convertAndSend("work", articleMessage);
+        }
+
         return articleVo;
     }
 
