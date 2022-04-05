@@ -2,6 +2,7 @@ package com.lyj.vblog.controller;
 
 
 import com.lyj.vblog.common.Result;
+import com.lyj.vblog.common.aop.Cache;
 import com.lyj.vblog.pojo.Tag;
 import com.lyj.vblog.service.ITagService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,7 @@ public class TagController {
     private ITagService tagService;
 
     @GetMapping("hot")
+    @Cache(expire = 2 * 60 * 1000, name = "hot_tags")
     public Result hotTags() {
         /*前6个最热标签*/
         int limit = 6;

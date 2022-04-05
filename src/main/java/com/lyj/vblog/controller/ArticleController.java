@@ -2,6 +2,7 @@ package com.lyj.vblog.controller;
 
 
 import com.lyj.vblog.common.Result;
+import com.lyj.vblog.common.aop.Cache;
 import com.lyj.vblog.common.aop.LogAnnotation;
 import com.lyj.vblog.params.ArticleParam;
 import com.lyj.vblog.service.IArticleService;
@@ -38,6 +39,7 @@ public class ArticleController {
      * @return
      */
     @PostMapping("/hot")
+    @Cache(expire = 2 * 60 * 1000, name = "hot_articles")
     public Result hotArticles() {
         int limit = 5; // 取前5条
         return Result.success(articleService.findHotArticles(limit));
@@ -49,6 +51,7 @@ public class ArticleController {
      * @return
      */
     @PostMapping("/new")
+    @Cache(expire = 2 * 60 * 1000, name = "new_articles")
     public Result newArticles() {
         int limit = 5; // 取前5条
         return Result.success(articleService.findNewArticles(limit));
