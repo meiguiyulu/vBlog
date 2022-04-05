@@ -14,5 +14,12 @@
     <sql id="Base_Column_List">
         id, name, path, description
     </sql>
+    <select id="findPermissionsByAdminId" resultType="com.lyj.vblogadmin.pojo.Permission">
+        select * from ms_permission
+        where id in (
+            select permission_id from ms_admin_permission
+            where admin_id = #{adminId}
+        )
+    </select>
 
 </mapper>

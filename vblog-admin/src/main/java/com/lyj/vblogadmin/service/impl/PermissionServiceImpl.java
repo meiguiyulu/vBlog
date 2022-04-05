@@ -39,7 +39,7 @@ public class PermissionServiceImpl extends ServiceImpl<PermissionMapper, Permiss
         Page<Permission> page = new Page<>(pageParam.getCurrentPage(), pageParam.getPageSize());
         QueryWrapper<Permission> wrapper = new QueryWrapper<Permission>();
         if (!StrUtil.isBlank(pageParam.getQueryString())) {
-            wrapper.eq("name", pageParam.getQueryString());
+            wrapper.like("name", pageParam.getQueryString());
         }
         Page<Permission> permissionPage = permissionMapper.selectPage(page, wrapper);
         pageResult<Permission> result = new pageResult<>();
