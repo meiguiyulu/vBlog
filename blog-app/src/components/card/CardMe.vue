@@ -2,8 +2,8 @@
   <el-card>
     <h1 class="me-author-name">码神之路</h1>
     <div class="me-author-description">
-      <span><i class="el-icon-location-outline"></i> &nbsp;山西&太原</span>
-      <span><i class="me-icon-job"></i> &nbsp;java技术专家</span>
+      <span><i class="el-icon-location-outline"></i> &nbsp;山东&濰坊</span>
+      <span><i class="me-icon-job"></i> &nbsp;java小学徒</span>
     </div>
     <div class="me-author-tool">
       <i @click="showTool(qq)" :title="qq.title" class="iconfont icon-qq"></i>
@@ -18,10 +18,10 @@
     name: 'CardMe',
     data() {
       return {
-        qq: {title: 'QQ', message: '723663826'},
+        qq: {title: 'QQ', message: '1609226090'},
         bilibili: {
-          title: '哔哩哔哩',
-          message: '<a target="_blank" href="https://space.bilibili.com/473844125">https://space.bilibili.com/473844125</a>'
+          title: 'github',
+          message: '<a target="_blank" href="https://github.com/meiguiyulu">https://github.com/meiguiyulu</a>'
         }
       }
     },
